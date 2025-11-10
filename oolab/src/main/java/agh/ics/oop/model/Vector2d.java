@@ -62,6 +62,12 @@ public class Vector2d {
         Vector2d that = (Vector2d) other;
         return this.x == that.x && this.y == that.y;
     }
+    @Override
+    public int hashCode() {
+        int result = Integer.hashCode(x);
+        result = 31 * result + Integer.hashCode(y);
+        return result;
+    }
 
 
 
