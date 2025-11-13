@@ -26,35 +26,36 @@ public class Animal {
 
     @Override
     public String toString() {
-        return "Zwierzak znajduje sie na pozycji " + position
-                + " ustawiony jest w strone " + orientation;
+        return switch (orientation) {
+            case NORTH -> "N";
+            case EAST  -> "E";
+            case SOUTH -> "S";
+            case WEST  -> "W";
+        };
     }
 
     public boolean isAt(Vector2d position){
         return this.position.equals(position);
     }
 
-    public void move(MoveDirection direction){
+    public void move(MoveDirection direction, MoveValidator validator){
         switch (direction){
             case RIGHT -> orientation = orientation.next();
             case LEFT -> orientation = orientation.previous();
             case FORWARD -> {
                 Vector2d newPosition = position.add(orientation.toUnitVector());
-                if (insideBoundaries(newPosition)){
+                if (validator.canMoveTo(newPosition)){
                     position = newPosition;
                 }
             }
             case BACKWARD -> {
                 Vector2d newPosition = position.sub(orientation.toUnitVector());
-                if (insideBoundaries(newPosition)){
+                if (validator.canMoveTo(newPosition)){
                     position = newPosition;
                 }
             }
         }
     }
 
-    private boolean insideBoundaries(Vector2d position){
-        return position.getX() >= 0 && position.getX() <= 4
-                && position.getY() >= 0 && position.getY() <= 4;
-    }
+
 }
